@@ -12,10 +12,43 @@ function Tamogotchi(tamoName) {
             -mood percentage
             -saying(a saying relating the the mood)
     */
+    this.sayings = [
+        {mood: "happy", perc:0.2, saying:"Today is the greatest day I've ever known."},
+        {mood: "happy", perc:0.4, saying:"Bork Bork Bork!!"},
+        {mood: "happy", perc:0.6, saying:"Damn Skippy!"},
+        {mood: "happy", perc:0.8, saying:"Dinner Gurkins!"},
+        {mood: "happy", perc:1, saying:"Awesome Sauce!!"},
+        {mood: "angry", perc:0.2, saying:"Toasting my marshmallows"},
+        {mood: "angry", perc:0.4, saying:"You are a sour grape twerplette!"},
+        {mood: "angry", perc:0.6, saying:"Eat Dust!"},
+        {mood: "angry", perc:0.8, saying:"You're a Muffin Stump!"},
+        {mood: "angry", perc:1, saying:"Get Forked!"},
+        {mood: "sad", perc:0.2, saying:"I'm a wet noodle of sadness :("},
+        {mood: "sad", perc:0.4, saying:"I feel like someone went wee in my cornflakes :("},
+        {mood: "sad", perc:0.6, saying:"I'm useless like a muffin stump :("},
+        {mood: "sad", perc:0.8, saying:"My life is like cherry pits :("},
+        {mood: "sad", perc:1, saying:"I'm so far behind that I'll never Ketchup :("},
+        {mood: "joke", perc:0.2, saying:"Smoking will kill you... Bacon will kill you... But,smoking bacon will cure it."},
+        {mood: "joke", perc:0.4, saying:"One day you're the best thing since sliced bread. The next, you're toast."},
+        {mood: "joke", perc:0.6, saying:"I removed all the fattening food from my house. It was delicious."},
+        {mood: "joke", perc:0.8, saying:"What is an alien's favorite candy? A Mars bar!"},
+        {mood: "joke", perc:1, saying:"What do you call a cow during an earthquake? A milkshake."}
+    ]
     /*
         an array of compliments
         -10 items
     */
+   let compliments = [
+       `${uname}, you have the shiniest nose hairs!`,
+       `${uname} is awesome!`,
+       `If you look in the dictionary next to awesome, you'll find a picture of ${uname}!`,
+       `${uname} is the greatest!`,
+       `${uname}, you are fine! Damn!`,
+       `${uname}, did it hurt when you fell out of heaven?`,
+       `${uname}, you have style!`,
+       `${uname}, I'd hug you if I weren't just pixels!`,
+       `${uname}, I bet you sweat glitter!`,
+   ]
 
     /*
         add an array of favourite foods(at least 10)

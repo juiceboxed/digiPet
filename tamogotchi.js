@@ -38,17 +38,17 @@ function Tamogotchi(tamoName) {
         an array of compliments
         -10 items
     */
-   let compliments = [
-       `${uname}, you have the shiniest nose hairs!`,
-       `${uname} is awesome!`,
-       `If you look in the dictionary next to awesome, you'll find a picture of ${uname}!`,
-       `${uname} is the greatest!`,
-       `${uname}, you are fine! Damn!`,
-       `${uname}, did it hurt when you fell out of heaven?`,
-       `${uname}, you have style!`,
-       `${uname}, I'd hug you if I weren't just pixels!`,
-       `${uname}, I bet you sweat glitter!`,
-   ]
+   this.compliments = [
+       'bork you have the shiniest nose hairs!',
+       `bork is awesome!`,
+       `If you look in the dictionary next to awesome, you'll find a picture of bork!`,
+       `bork is the greatest!`,
+       `bork, you are fine! Damn!`,
+       `bork, did it hurt when you fell out of heaven?`,
+       `bork, you have style!`,
+       `bork, I'd hug you if I weren't just pixels!`,
+       `bork, I bet you sweat glitter!`,
+   ];
 
     /*
         add an array of favourite foods(at least 10)
@@ -57,7 +57,7 @@ function Tamogotchi(tamoName) {
         -food value
         -chance of food poisoning
     */
-   let foods = [
+   this.foods = [
        {foodName: "Oysters", foodValue:5, foodPoisoning:.4},
        {foodName: "Sushi", foodValue:25, foodPoisoning:.2},
        {foodName: "Pizza", foodValue:35, foodPoisoning:.15},
@@ -107,18 +107,66 @@ Tamogotchi.prototype.eatLasagna = function() {
 //to add
 
 //a drink coffee command that speeds up the metabolism of your pet
+Tamogotchi.prototype.drinkCoffee = function(){
+    if(this.food>0){
+        console.log("Yum!  Coffee!!!!! :D");
+        this.changeMetabolism(500);
+    }else{
+        console.log("the dead do not drink coffee!");
+    }
+}
 
 //a drink beer command that slows down the metabolism of your pet
-
+Tamogotchi.prototype.drinkBeer = function(){
+    if(this.food>0){
+        console.log("Yum!  Beer!!!!!! :D");
+        this.changeMetabolism(200);
+    }else{
+        console.log("the dead do not drink beer!");
+    }
+}
+Tamogotchi.prototype.changeMetabolism = function(newRate){
+    console.log("Yum!  Coffee!!!!! :D");
+    clearInterval(this.metabolism);
+    this.metabolismRate = newRate;
+    this.startMetabolism();
+}
 /*
 an eat food command that will select a random food that will 
 -check if the pet gets food poisoning
 -add points to the pets food count if they don't get food poisoning
 -remove points from the pets food count if they do get food poisoning
 */
-
+Tamogotchi.prototype.eatFood = function(){
+    if(this.food>0){
+        const chosenFood = this.foods[Math.floor(Math.random()*this.foods.length)];
+        const poisonChance = Math.random();
+        const isPoisoned = Math.random()<chosenFood.foodPoisoning;
+        if(isPoisoned==true){
+            this.food -=chosenFood.foodValue;
+            console.log(`Yuck!  I just lost ${chosenFood.foodValue} from eating ${chosenFood.foodName}`);
+        }else{
+            this.food +=chosenFood.foodValue;
+            console.log(`Yummy!  I just gained ${chosenFood.foodValue} from eating ${chosenFood.foodName}`);
+        }
+    }
+};
 // a command that takes in a mood and returns a phrase
+Tamogotchi.prototype.talk = function(mood){
+    const moodPhrases  = this.sayings.filter(saying => saying.mood == mood);
+    if(moodPhrases.length>0){
+        const moodPhrase = moodPhrases[Math.floor(Math.random()*moodPhrases.length)];
+        console.log(moodPhrase.saying);
+    }else{
+        console.log("uh, what?");
+    }
+}
 
 /*
     a command that takes in your name and returns you a compliment structured using template
 */
+Tamogotchi.prototype.wooMe = function(compName){
+    let phrase =this.compliments[Math.floor(Math.random()*this.compliments.length)];
+    let updatedPhrase = phrase.replace(/bork/g, compName);
+    console.log(updatedPhrase);
+};

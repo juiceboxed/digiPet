@@ -74,6 +74,7 @@ function Tamogotchi(tamoName) {
         this.petName = tamoName;
         console.log(`Hi!  I'm ${this.petName}`);
         this.hatch();
+        this.showTamogotchi(document.querySelector("#tamoHome"));
     }
     this.init();
 }
@@ -169,4 +170,35 @@ Tamogotchi.prototype.wooMe = function(compName){
     let phrase =this.compliments[Math.floor(Math.random()*this.compliments.length)];
     let updatedPhrase = phrase.replace(/bork/g, compName);
     console.log(updatedPhrase);
+};
+
+/* create a visual for the tamogotchi */
+Tamogotchi.prototype.showTamogotchi = function(tamoNode){
+    tamoNode.innerHTML = `
+        <svg width=500px height=500px>
+            <g id='head'>
+                <rect x="10" y="10" width="140" height="120" fill="yellow" stroke="navy" stroke-width="5" />
+                <g id='left_eye'>
+                    <ellipse cx="40" cy="60" rx="15" ry="30" style="stroke: black; fill: none;" />
+                    <circle cx="40" cy="60" r="5" class="live_eye"/>
+                    <g class="dead_eye">
+                        <line x1="10" y1="10" x2="30" y2="30" stroke="red" stroke-width="5" />
+                        <line x1="30" y1="10" x2="10" y2="30" stroke="red" stroke-width="5" />
+                    </g>
+                </g>
+                <g id='right_eye'>
+                    <ellipse cx="100" cy="60" rx="30" ry="15" stroke="black" fill="none" />
+                    <circle cx="100" cy="60" r="5" class="live_eye">
+                </g>
+
+                <g id="mouth">
+
+                </g>
+            </g>
+        </svg>
+    `;
+}
+
+window.onload = function(){
+    let bob = new Tamogotchi("Bob");
 };

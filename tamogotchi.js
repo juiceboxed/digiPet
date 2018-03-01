@@ -2,6 +2,8 @@ function Tamogotchi(tamoName) {
     //
     this.petName;
     this.initialFood = 60;
+    this.food;
+    this.talkTimer;
     this.metabolismRate = 1000;
 
     /*
@@ -72,12 +74,25 @@ function Tamogotchi(tamoName) {
 
     this.init = () => {
         this.petName = tamoName;
-        console.log(`Hi!  I'm ${this.petName}`);
         this.hatch();
         this.showTamogotchi(document.querySelector("#tamoHome"));
         this.talkBox = document.querySelector("#tamoVoice");
+        this.statsCounter = document.querySelector("#petStats");
+        //here we start the visuals
+        this.initFace();
+        this.useMouth(`Hi!  I'm ${this.petName}`);
+        
+        console.log(this.statsCounter);
+        this.displayStats();
     }
     this.init();
+}
+Tamogotchi.prototype.displayStats = function(){
+    if(this.food>0){
+        this.statsCounter.innerText = `${this.food} of ${this.initialFood}`;
+    }else{
+        this.statsCounter.innerText = `${this.petName} is dead!`;
+    }
 }
 Tamogotchi.prototype.resetFood = function(){
     this.food=this.initialFood;
@@ -89,12 +104,12 @@ Tamogotchi.prototype.hatch = function(){
 }
 Tamogotchi.prototype.die = function(){
     clearInterval(this.metabolism);
-    console.log("I am dead!");
+    this.useMouth("I am dead!");
 }
 Tamogotchi.prototype.startMetabolism = function(){
     this.metabolism = setInterval(()=> {
         this.food -=1;
-        console.log(`${this.food} until I starve`);
+        this.displayStats();
         if(this.food<=0){
             this.die();
         }
@@ -102,7 +117,7 @@ Tamogotchi.prototype.startMetabolism = function(){
 }
 
 Tamogotchi.prototype.eatLasagna = function() {
-    console.log(`can I see the food? ${this.food}`);
+    this.useMouth(`can I see the food? ${this.food}`);
     this.food +=20;
 }
 
@@ -111,24 +126,23 @@ Tamogotchi.prototype.eatLasagna = function() {
 //a drink coffee command that speeds up the metabolism of your pet
 Tamogotchi.prototype.drinkCoffee = function(){
     if(this.food>0){
-        console.log("Yum!  Coffee!!!!! :D");
+        this.useMouth("Yum!  Coffee!!!!! :D");
         this.changeMetabolism(500);
     }else{
-        console.log("the dead do not drink coffee!");
+        this.useMouth("the dead do not drink coffee!");
     }
 }
 
 //a drink beer command that slows down the metabolism of your pet
 Tamogotchi.prototype.drinkBeer = function(){
     if(this.food>0){
-        console.log("Yum!  Beer!!!!!! :D");
-        this.changeMetabolism(200);
+        this.useMouth("Yum!  Beer!!!!!! :D");
+        this.changeMetabolism(2000);
     }else{
-        console.log("the dead do not drink beer!");
+        this.useMouth("the dead do not drink beer!");
     }
 }
 Tamogotchi.prototype.changeMetabolism = function(newRate){
-    console.log("Yum!  Coffee!!!!! :D");
     clearInterval(this.metabolism);
     this.metabolismRate = newRate;
     this.startMetabolism();
@@ -146,10 +160,10 @@ Tamogotchi.prototype.eatFood = function(){
         const isPoisoned = Math.random()<chosenFood.foodPoisoning;
         if(isPoisoned==true){
             this.food -=chosenFood.foodValue;
-            console.log(`Yuck!  I just lost ${chosenFood.foodValue} from eating ${chosenFood.foodName}`);
+            this.useMouth(`Yuck!  I just lost ${chosenFood.foodValue} from eating ${chosenFood.foodName}`);
         }else{
             this.food +=chosenFood.foodValue;
-            console.log(`Yummy!  I just gained ${chosenFood.foodValue} from eating ${chosenFood.foodName}`);
+            this.useMouth(`Yummy!  I just gained ${chosenFood.foodValue} from eating ${chosenFood.foodName}`);
         }
     }
 };
@@ -158,13 +172,15 @@ Tamogotchi.prototype.talk = function(mood){
     const moodPhrases  = this.sayings.filter(saying => saying.mood == mood);
     if(moodPhrases.length>0){
         const moodPhrase = moodPhrases[Math.floor(Math.random()*moodPhrases.length)];
-        console.log(moodPhrase.saying);
-        this.talkBox.innerText = moodPhrase.saying;
+        this.useMouth(moodPhrase.saying);
+        
     }else{
-        console.log("uh, what?");
-        this.talkBox.innerText = "duuuuuh!";
+        this.useMouth("derp derp!");
     }
-    startTalking();
+}
+Tamogotchi.prototype.useMouth = function(words){
+    this.startTalking();
+    this.talkBox.innerText = words;
 }
 
 /*
@@ -173,7 +189,7 @@ Tamogotchi.prototype.talk = function(mood){
 Tamogotchi.prototype.wooMe = function(compName){
     let phrase =this.compliments[Math.floor(Math.random()*this.compliments.length)];
     let updatedPhrase = phrase.replace(/bork/g, compName);
-    console.log(updatedPhrase);
+    this.useMouth(updatedPhrase);
 };
 
 /* create a visual for the tamogotchi */
@@ -212,34 +228,37 @@ Tamogotchi.prototype.showTamogotchi = function(tamoNode){
             </g>
         </svg>
         <p id="tamoVoice">I am the voice of the pet!</p>
+        <p id="petStats"></p>
     `;
 }
 /* here we control the mouth of the Pet */
-function hideMouths(){
-    let happyMouth = document.querySelector("#happy_mouth");
-    let sadMouth = document.querySelector("#sad_mouth");
-    let neutralMouth = document.querySelector("#neutral_mouth");
-    let talkMouth = document.querySelector("#talk_mouth");
-    happyMouth.classList.add("hidden");
-    sadMouth.classList.add("hidden");
-    neutralMouth.classList.add("hidden");
-    talkMouth.classList.add("hidden");
+Tamogotchi.prototype.initFace = function(){
+    this.mouth = document.querySelector("#mouth");
+    this.happyMouth = document.querySelector("#happy_mouth");
+    this.sadMouth = document.querySelector("#sad_mouth");
+    this.neutralMouth = document.querySelector("#neutral_mouth");
+    this.talkMouth = document.querySelector("#talk_mouth");
 }
-function startTalking(){
-    hideMouths();
-    let mouth = document.querySelector("#mouth");
-    let talkMouth = document.querySelector("#talk_mouth");
-    talkMouth.classList.remove("hidden");
-    talkMouth.classList.add("talking"); 
-    setTimeout(stopTalking, 2000);
+
+Tamogotchi.prototype.hideMouths = function(){
+    this.happyMouth.classList.add("hidden");
+    this.sadMouth.classList.add("hidden");
+    this.neutralMouth.classList.add("hidden");
+    this.talkMouth.classList.add("hidden");
 }
-function stopTalking(){
-    hideMouths();
-    let mouth = document.querySelector("#mouth");
-    let neutralMouth = document.querySelector("#neutral_mouth");
-    neutralMouth.classList.remove("hidden");
-    mouth.classList.remove("talking");
+Tamogotchi.prototype.startTalking = function(){
+    this.hideMouths();
+    this.talkMouth.classList.remove("hidden");
+    this.talkMouth.classList.add("talking"); 
+    clearTimeout(this.talkTimer);
+    this.talkTimer = setTimeout(() => this.stopTalking(), 2000);
 }
+Tamogotchi.prototype.stopTalking = function(){
+    this.hideMouths();
+    this.neutralMouth.classList.remove("hidden");
+    this.mouth.classList.remove("talking");
+}
+
 /* here we control the eyes of the pet */
 
 

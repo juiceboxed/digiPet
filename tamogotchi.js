@@ -75,6 +75,7 @@ function Tamogotchi(tamoName) {
         console.log(`Hi!  I'm ${this.petName}`);
         this.hatch();
         this.showTamogotchi(document.querySelector("#tamoHome"));
+        this.talkBox = document.querySelector("#tamoVoice");
     }
     this.init();
 }
@@ -158,9 +159,12 @@ Tamogotchi.prototype.talk = function(mood){
     if(moodPhrases.length>0){
         const moodPhrase = moodPhrases[Math.floor(Math.random()*moodPhrases.length)];
         console.log(moodPhrase.saying);
+        this.talkBox.innerText = moodPhrase.saying;
     }else{
         console.log("uh, what?");
+        this.talkBox.innerText = "duuuuuh!";
     }
+    startTalking();
 }
 
 /*
@@ -175,30 +179,71 @@ Tamogotchi.prototype.wooMe = function(compName){
 /* create a visual for the tamogotchi */
 Tamogotchi.prototype.showTamogotchi = function(tamoNode){
     tamoNode.innerHTML = `
-        <svg width=500px height=500px>
+        <svg width=180px height=180px>
             <g id='head'>
-                <rect x="10" y="10" width="140" height="120" fill="yellow" stroke="navy" stroke-width="5" />
+                <rect x="10" y="10" width="140" height="160" fill="yellow" stroke="navy" stroke-width="5" />
                 <g id='left_eye'>
-                    <ellipse cx="40" cy="60" rx="15" ry="30" style="stroke: black; fill: none;" />
-                    <circle cx="40" cy="60" r="5" class="live_eye"/>
+                    <rect x="25" y="25" width="40" height="10" fill="brown" class="brow"/>
+                    <ellipse cx="45" cy="70" rx="15" ry="30" style="stroke: black; fill: none;" />
+                    <circle cx="45" cy="70" r="5" class="live_eye"/>
                     <g class="dead_eye">
-                        <line x1="10" y1="10" x2="30" y2="30" stroke="red" stroke-width="5" />
-                        <line x1="30" y1="10" x2="10" y2="30" stroke="red" stroke-width="5" />
+                        <line x1="35" y1="60" x2="55" y2="80" stroke="red" stroke-width="5" />
+                        <line x1="55" y1="60" x2="35" y2="80" stroke="red" stroke-width="5" />
                     </g>
                 </g>
                 <g id='right_eye'>
-                    <ellipse cx="100" cy="60" rx="30" ry="15" stroke="black" fill="none" />
-                    <circle cx="100" cy="60" r="5" class="live_eye">
+                    <rect x="90" y="25" width="40" height="10" fill="brown" class="brow"/>
+                    <ellipse cx="110" cy="70" rx="30" ry="15" stroke="black" fill="none" />
+                    <circle cx="110" cy="70" r="5" class="live_eye"/>
+                    <g class="dead_eye">
+                        <line x1="100" y1="60" x2="120" y2="80" stroke="red" stroke-width="5" />
+                        <line x1="120" y1="60" x2="100" y2="80" stroke="red" stroke-width="5" />
+                    </g>
                 </g>
-
                 <g id="mouth">
-
+                    <rect id="talk_mouth" class="hidden" x="20" y="120" width="120" height="30" fill="orange" stroke="navy" stroke-width="5" />
+                    <path id="happy_mouth" class="hidden" d="M 20,120 Q 80,140 140,120" stroke="navy" fill="none" stroke-width="5" />
+                    <path id="sad_mouth" class="hidden" d="M 20,160 Q 80,140 140,160" stroke="navy" fill="none" stroke-width="5" />
+                    <path id="neutral_mouth" d="M 20,140 Q 80,140 140,140" stroke="navy" fill="none" stroke-width="5" />
                 </g>
+                <!--g id="speach_bubble">
+                    <polygon fill="white" stroke="black" stroke-width="3" points="145,120 180,80 180,10 400,10 400,100 200,100, 145,120" />
+                </g-->
             </g>
         </svg>
+        <p id="tamoVoice">I am the voice of the pet!</p>
     `;
 }
+/* here we control the mouth of the Pet */
+function hideMouths(){
+    let happyMouth = document.querySelector("#happy_mouth");
+    let sadMouth = document.querySelector("#sad_mouth");
+    let neutralMouth = document.querySelector("#neutral_mouth");
+    let talkMouth = document.querySelector("#talk_mouth");
+    happyMouth.classList.add("hidden");
+    sadMouth.classList.add("hidden");
+    neutralMouth.classList.add("hidden");
+    talkMouth.classList.add("hidden");
+}
+function startTalking(){
+    hideMouths();
+    let mouth = document.querySelector("#mouth");
+    let talkMouth = document.querySelector("#talk_mouth");
+    talkMouth.classList.remove("hidden");
+    talkMouth.classList.add("talking"); 
+    setTimeout(stopTalking, 2000);
+}
+function stopTalking(){
+    hideMouths();
+    let mouth = document.querySelector("#mouth");
+    let neutralMouth = document.querySelector("#neutral_mouth");
+    neutralMouth.classList.remove("hidden");
+    mouth.classList.remove("talking");
+}
+/* here we control the eyes of the pet */
 
+
+let bob;
 window.onload = function(){
-    let bob = new Tamogotchi("Bob");
+    bob = new Tamogotchi("Bob");
 };

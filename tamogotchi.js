@@ -60,7 +60,7 @@ function Tamogotchi(tamoName) {
         -chance of food poisoning
     */
    this.foods = [
-       /*{foodName: "Oysters", foodValue:5, foodPoisoning:.4},
+       {foodName: "Oysters", foodValue:5, foodPoisoning:.4},
        {foodName: "Sushi", foodValue:25, foodPoisoning:.2},
        {foodName: "Pizza", foodValue:35, foodPoisoning:.15},
        {foodName: "Falafel", foodValue:50, foodPoisoning:.05},
@@ -69,7 +69,7 @@ function Tamogotchi(tamoName) {
        {foodName: "Eggs Florentine", foodValue:60, foodPoisoning:.3},
        {foodName: "Chocolate Cake", foodValue:10, foodPoisoning:.01},
        {foodName: "Chicken Sashimi", foodValue:25, foodPoisoning:.75},
-       {foodName: "Balut", foodValue:25, foodPoisoning:.8},*/
+       {foodName: "Balut", foodValue:25, foodPoisoning:.8},
        {foodName: "Poison", foodValue:1, foodPoisoning:1}
    ]
 

@@ -60,7 +60,7 @@ function Tamogotchi(tamoName) {
         -chance of food poisoning
     */
    this.foods = [
-       {foodName: "Oysters", foodValue:5, foodPoisoning:.4},
+       /*{foodName: "Oysters", foodValue:5, foodPoisoning:.4},
        {foodName: "Sushi", foodValue:25, foodPoisoning:.2},
        {foodName: "Pizza", foodValue:35, foodPoisoning:.15},
        {foodName: "Falafel", foodValue:50, foodPoisoning:.05},
@@ -69,21 +69,16 @@ function Tamogotchi(tamoName) {
        {foodName: "Eggs Florentine", foodValue:60, foodPoisoning:.3},
        {foodName: "Chocolate Cake", foodValue:10, foodPoisoning:.01},
        {foodName: "Chicken Sashimi", foodValue:25, foodPoisoning:.75},
-       {foodName: "Balut", foodValue:25, foodPoisoning:.8}
+       {foodName: "Balut", foodValue:25, foodPoisoning:.8},*/
+       {foodName: "Poison", foodValue:1, foodPoisoning:1}
    ]
 
     this.init = () => {
         this.petName = tamoName;
-        this.hatch();
         this.showTamogotchi(document.querySelector("#tamoHome"));
         this.talkBox = document.querySelector("#tamoVoice");
         this.statsCounter = document.querySelector("#petStats");
-        //here we start the visuals
-        this.initFace();
-        this.useMouth(`Hi!  I'm ${this.petName}`, this.neutralMouth);
-        
-        console.log(this.statsCounter);
-        this.displayStats();
+        this.hatch();
     }
     this.init();
 }
@@ -101,9 +96,13 @@ Tamogotchi.prototype.resetFood = function(){
 Tamogotchi.prototype.hatch = function(){
     this.resetFood();
     this.startMetabolism();
+    this.initFace();
+    this.useMouth(`Hi!  I'm ${this.petName}`, this.neutralMouth);
+    this.displayStats();
 }
 Tamogotchi.prototype.die = function(){
     clearInterval(this.metabolism);
+    this.show_deadEyes();
     this.useMouth("I am dead!", this.sadMouth);
 }
 Tamogotchi.prototype.startMetabolism = function(){
@@ -161,6 +160,7 @@ Tamogotchi.prototype.eatFood = function(){
         if(isPoisoned==true){
             this.food -=chosenFood.foodValue;
             this.useMouth(`Yuck!  I just lost ${chosenFood.foodValue} from eating ${chosenFood.foodName}`, this.sadMouth);
+            this.poison_eyes();
         }else{
             this.food +=chosenFood.foodValue;
             this.useMouth(`Yummy!  I just gained ${chosenFood.foodValue} from eating ${chosenFood.foodName}`, this.happyMouth);
@@ -191,7 +191,6 @@ Tamogotchi.prototype.talk = function(mood){
     }
 }
 Tamogotchi.prototype.useMouth = function(words, mouthType){
-    console.log(mouthType);
     this.startTalking(mouthType);
     this.talkBox.innerText = words;
 }
@@ -251,6 +250,11 @@ Tamogotchi.prototype.initFace = function(){
     this.sadMouth = document.querySelector("#sad_mouth");
     this.neutralMouth = document.querySelector("#neutral_mouth");
     this.talkMouth = document.querySelector("#talk_mouth");
+
+    this.deadEye_left = document.querySelector("#left_eye .dead_eye");
+    this.deadEye_right = document.querySelector("#right_eye .dead_eye");
+    this.deadEyes = [this.deadEye_left, this.deadEye_right];
+    this.hide_deadEyes();
 }
 
 Tamogotchi.prototype.hideMouths = function(){
@@ -261,7 +265,6 @@ Tamogotchi.prototype.hideMouths = function(){
 }
 Tamogotchi.prototype.changeExpression = function(mouthType){
     this.hideMouths();
-    console.log(mouthType);
     (mouthType).classList.remove("hidden");
 }
 Tamogotchi.prototype.startTalking = function(mouthType){
@@ -278,7 +281,22 @@ Tamogotchi.prototype.stopTalking = function(mouthType){
 }
 
 /* here we control the eyes of the pet */
-
+/* hiding the dead state of the eyes */
+Tamogotchi.prototype.hide_deadEyes = function(){
+    this.deadEyes.forEach(eye => {
+        eye.classList.add("hidden");
+        eye.classList.remove("poisoned");
+    });
+}
+/* showing the dead state of th eyes */
+Tamogotchi.prototype.show_deadEyes = function(){
+    this.deadEyes.forEach(eye => eye.classList.remove("hidden"));
+}
+Tamogotchi.prototype.poison_eyes = function(){
+    this.show_deadEyes();
+    this.deadEyes.forEach(eye => eye.classList.add("poisoned"));
+    this.poisonTimeout = setTimeout(() => this.hide_deadEyes(), 2000);
+}
 
 let bob;
 window.onload = function(){

@@ -10,6 +10,58 @@
     animation: mouthMotion 1s linear 1s infinite;
 }
 
+#right_eye .poisoned{
+    animation: eyePoisonRight 2s linear 0s infinite alternate;
+}
+#left_eye .poisoned{
+    animation: eyePoisonLeft 2s linear 0s infinite alternate;
+}
+
+@keyframes eyePoisonRight{
+    0%{
+        transform: scale(.5);
+        transform-origin: 110px 70px;
+    }
+    25%{
+        transform: scale(1.5);
+        transform-origin: 110px 70px;
+    }
+    50%{
+        transform: scale(.5);
+        transform-origin: 110px 70px;
+    }
+    75%{
+        transform: scale(1.5);
+        transform-origin: 110px 70px;
+    }
+    100%{
+        transform: scale(0.5);
+        transform-origin: 110px 70px;
+    }
+}
+@keyframes eyePoisonLeft{
+    0%{
+        transform: scale(1.5);
+        transform-origin: 45px 70px;
+    }
+    25%{
+        transform: scale(0.5);
+        transform-origin: 45px 70px;
+    }
+    50%{
+        transform: scale(1.5);
+        transform-origin: 45px 70px;
+    }
+    75%{
+        transform: scale(0.5);
+        transform-origin: 45px 70px;
+    }
+    100%{
+        transform: scale(1.5);
+        transform-origin: 45px 70px;
+    }
+}
+
 @keyframes mouthMotion{
     0%{
         transform: scaleY(1);

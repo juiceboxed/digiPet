@@ -6,81 +6,26 @@ function Tamogotchi(tamoName) {
     this.talkTimer;
     this.metabolismRate = 1000;
 
-    /*
-        add an array of objects
-        -20 items
-        -each element of the array has the following
-            -mood(angry, happy, sad, joke)
-            -mood percentage
-            -saying(a saying relating the the mood)
-    */
-    this.sayings = [
-        {mood: "happy", perc:0.2, saying:"Today is the greatest day I've ever known."},
-        {mood: "happy", perc:0.4, saying:"Bork Bork Bork!!"},
-        {mood: "happy", perc:0.6, saying:"Damn Skippy!"},
-        {mood: "happy", perc:0.8, saying:"Dinner Gurkins!"},
-        {mood: "happy", perc:1, saying:"Awesome Sauce!!"},
-        {mood: "angry", perc:0.2, saying:"Toasting my marshmallows"},
-        {mood: "angry", perc:0.4, saying:"You are a sour grape twerplette!"},
-        {mood: "angry", perc:0.6, saying:"Eat Dust!"},
-        {mood: "angry", perc:0.8, saying:"You're a Muffin Stump!"},
-        {mood: "angry", perc:1, saying:"Get Forked!"},
-        {mood: "sad", perc:0.2, saying:"I'm a wet noodle of sadness :("},
-        {mood: "sad", perc:0.4, saying:"I feel like someone went wee in my cornflakes :("},
-        {mood: "sad", perc:0.6, saying:"I'm useless like a muffin stump :("},
-        {mood: "sad", perc:0.8, saying:"My life is like cherry pits :("},
-        {mood: "sad", perc:1, saying:"I'm so far behind that I'll never Ketchup :("},
-        {mood: "joke", perc:0.2, saying:"Smoking will kill you... Bacon will kill you... But,smoking bacon will cure it."},
-        {mood: "joke", perc:0.4, saying:"One day you're the best thing since sliced bread. The next, you're toast."},
-        {mood: "joke", perc:0.6, saying:"I removed all the fattening food from my house. It was delicious."},
-        {mood: "joke", perc:0.8, saying:"What is an alien's favorite candy? A Mars bar!"},
-        {mood: "joke", perc:1, saying:"What do you call a cow during an earthquake? A milkshake."}
-    ]
-    /*
-        an array of compliments
-        -10 items
-    */
-   this.compliments = [
-       'bork you have the shiniest nose hairs!',
-       `bork is awesome!`,
-       `If you look in the dictionary next to awesome, you'll find a picture of bork!`,
-       `bork is the greatest!`,
-       `bork, you are fine! Damn!`,
-       `bork, did it hurt when you fell out of heaven?`,
-       `bork, you have style!`,
-       `bork, I'd hug you if I weren't just pixels!`,
-       `bork, I bet you sweat glitter!`,
-   ];
-
-    /*
-        add an array of favourite foods(at least 10)
-        each element of the array should have
-        -food name
-        -food value
-        -chance of food poisoning
-    */
-   this.foods = [
-       {foodName: "Oysters", foodValue:5, foodPoisoning:.4},
-       {foodName: "Sushi", foodValue:25, foodPoisoning:.2},
-       {foodName: "Pizza", foodValue:35, foodPoisoning:.15},
-       {foodName: "Falafel", foodValue:50, foodPoisoning:.05},
-       {foodName: "Sweetbreads", foodValue:30, foodPoisoning:.2},
-       {foodName: "Mussels", foodValue:12, foodPoisoning:.3},
-       {foodName: "Eggs Florentine", foodValue:60, foodPoisoning:.3},
-       {foodName: "Chocolate Cake", foodValue:10, foodPoisoning:.01},
-       {foodName: "Chicken Sashimi", foodValue:25, foodPoisoning:.75},
-       {foodName: "Balut", foodValue:25, foodPoisoning:.8},
-       {foodName: "Poison", foodValue:1, foodPoisoning:1}
-   ]
-
     this.init = () => {
         this.petName = tamoName;
-        this.showTamogotchi(document.querySelector("#tamoHome"));
-        this.talkBox = document.querySelector("#tamoVoice");
-        this.statsCounter = document.querySelector("#petStats");
-        this.hatch();
+        this.fetchData();
     }
     this.init();
+}
+Tamogotchi.prototype.fetchData = function(){
+    fetch('data/tamoData.json')
+    .then(function(data){
+        return data.json();  
+    })
+    .then( data =>{
+        this.foods = data.foods;
+        this.compliments = data.compliments;
+        this.sayings = data.sayings;
+        this.hatch();
+    })
+    .catch(error =>{
+        console.log(error);
+    });
 }
 Tamogotchi.prototype.displayStats = function(){
     if(this.food>0){
@@ -94,6 +39,10 @@ Tamogotchi.prototype.resetFood = function(){
 }
 
 Tamogotchi.prototype.hatch = function(){
+    this.showTamogotchi(document.querySelector("#tamoHome"));
+    this.talkBox = document.querySelector("#tamoVoice");
+    this.statsCounter = document.querySelector("#petStats");
+    //    
     this.resetFood();
     this.startMetabolism();
     this.initFace();

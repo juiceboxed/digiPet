@@ -14,9 +14,7 @@ function Tamogotchi(tamoName) {
 }
 Tamogotchi.prototype.fetchData = function(){
     fetch('data/tamoData.json')
-    .then(function(data){
-        return data.json();  
-    })
+    .then(data => data.json())
     .then( data =>{
         this.foods = data.foods;
         this.compliments = data.compliments;

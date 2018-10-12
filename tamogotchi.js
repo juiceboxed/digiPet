@@ -40,7 +40,18 @@ function Tamogotchi(tamoName) {
         an array of compliments
         -10 items
     */
-    this.compliments = [`I am a ${this.ownerName}`]
+    this.compliments = [
+                    "you're the best!", 
+                    "I can't imagine a world without you.", 
+                    "you're amazing!",
+                    "I love you!",
+                    "you're the best pet owner ever!",
+                    "I love what you feed me!",
+                    "I had a dream about you!",
+                    "you're always so nice to me!",
+                    "you're so sweet!",
+                    "you're hilarious!"
+                ]
 
     /*
         add an array of favourite foods(at least 10)
@@ -146,10 +157,10 @@ const result = this.moodArray.find( m => m.mood === moodToFind && m.percentage =
 */
 
 Tamogotchi.prototype.compliment = function(owner){
-	var random = Math.floor(Math.random() * 0);
+	var random = Math.floor(Math.random() * 10);
 	const comp = this.compliments[random];
 	this.ownerName = owner;
 
-	console.log(comp);
+	console.log(`Hey ${this.ownerName}, ` + comp);
 
 }
